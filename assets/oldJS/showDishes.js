@@ -1,8 +1,3 @@
-const API_KEY = config.KEY
-var storedDishes = JSON.parse(localStorage.getItem("Dish")) || []
-let dishesFromLocalStorage = JSON.parse(localStorage.getItem('restaurantDishes')) || []
-
-
 function showDishes() {
     var q = $(this).attr("data-zomato");
     console.log(q)
@@ -79,48 +74,3 @@ function showDishes() {
         }
     }
 }
-
-function zomatoMenuUrl(qname) {
-    var zomatoUrl = "https://developers.zomato.com/api/v2.1/search?entity_id=826&entity_type=city&q=" + qname;
-
-    $.ajax({
-        url: zomatoUrl,
-        method: "GET",
-        "headers": {
-            "user-key": "fd3179f7aa74b386fbac5aec3f13b934"
-        }
-
-    }).then(function(response) {
-        var menuUrlLink = $("<a>")
-            .addClass("zomato-link row text-center")
-            .attr("href", response.restaurants[0].restaurant.menu_url)
-            .text(qname + " " + "Menu via Zomato");
-
-        // // appending menu url div to body
-        $(".menu-container").prepend(menuUrlLink);
-    });
-};
-
-function applyDishButtonEventListener() {
-
-    var obj = {
-        dish: $(this).val(),
-        rest: $(this).attr("data-name")
-    };
-
-    console.log(storedDishes);
-    storedDishes.push(obj);
-    localStorage.setItem("Dish", JSON.stringify(storedDishes));
-    renderLastDishListItem();
-};
-
-function renderLastDishListItem() {
-
-    var lastItem = storedDishes.slice(-1)[0]
-    console.log(lastItem)
-    var dishListItem = $("<li>")
-        .text(lastItem.rest + ": " + lastItem.dish)
-        .addClass("dish-style");
-
-    $("#dishlist").append(dishListItem);
-};

@@ -1,9 +1,6 @@
 // on load, ask for user's location data
 window.addEventListener("load", getLocation);
 
-const userLocationFromLocalStorage = localStorage.getItem('location') || []
-let latlongUrl
-
 if (userLocationFromLocalStorage.length > 0) {
     latlongUrl = JSON.parse(userLocationFromLocalStorage)[2] || ''
 }
@@ -25,10 +22,3 @@ function getLocation() {
     }
 }
 
-function showPosition(position) {
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
-    latlongUrl = "https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?page=1&lon=" + lon + "&lat=" + lat + "&distance=5"
-    let userLocationInfo = [lat, lon, latlongUrl]
-    localStorage.setItem('location', JSON.stringify(userLocationInfo))
-};
