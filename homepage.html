@@ -18,18 +18,22 @@
         <a class="navbar-brand m-0" id="brand" href="homepage.html">Dish Tracker</a>
     </nav>
     <main class="d-flex flex-column">
-        <button class='btn btn-success py-2 my-3 mx-auto button-colors' id='use-my-loc'><h3>Use My Location</h3></button>
-        <h3 class='text-center'>OR</h3>
-        <form class='d-flex justify-content-center my-3' id='zip-form'>
-            <label for='zipcode' class='mr-3 font-size-2'>Zip </label>
-            <br>
-            <input type='text' id='zip' name='zip'>
-            <input type='submit' value="Let's Go!" class='btn btn-info btn-sm ml-2'>
-        </form>
+        <section class='d-flex flex-column'>
+            <button class='btn btn-success py-2 my-3 mx-auto button-colors' id='use-my-loc'><h3>Use My Location</h3></button>
+            <h3 class='text-center'>OR</h3>
+            <form class='d-flex justify-content-center my-3' id='zip-form'>
+                <label for='zipcode' class='my-1'>Zip &ThinSpace;</label>
+                <br>
+                <input type='text' id='zip' name='zip' placeholder='Enter zip'>
+                <input type='submit' value="Let's Go!" class='btn btn-info btn-sm ml-2'>
+            </form>
 
-        <section class="d-flex justify-content-center">
-            <h2 >Restaurants</h2>
-            <div id='rest-list'></div>
+        </section>
+
+        <section class="d-flex justify-content-center flex-column">
+            <h2 class='d-flex justify-content-center'>Restaurants</h2>
+            <div class='justify-content-center' id='rest-list'>
+            </div>
         </section>
         <section class="d-flex justify-content-center">
             <h2>Menu</h2>
@@ -47,7 +51,10 @@
     <script src="./assets/JS/config.js"></script>
     <script src="./assets//JS/globals.js"></script>
     <script src="./assets/JS/getUserLocation.js"></script>
-    <script src='./assets//JS/callAPI.js'></script>
+    <script src='./assets/JS/callAPI.js'></script>
+    <script src='./assets/JS/showRestaurants.js'></script>
+    <script src="./assets/JS/pagination.js"></script>
+    <script src="./assets/JS/eventListeners.js"></script>
 </body>
 
 </html>

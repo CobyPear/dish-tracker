@@ -8,7 +8,7 @@
 
 /* change background when hover on link */
 .btn:hover {
-    color: rgb(22, 21, 21);
+    color: rgb(139, 123, 123);
 }
 
 /* image of the background */
@@ -26,13 +26,19 @@ body {
     -webkit-text-fill-color: transparent;
     padding-right: 5px;
 }
+
+/* list style */
+li {
+    list-style: none;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    
+}
 /*    
 
-$hunter-green: #1E5926ff;
-$gunmetal: #213035ff;
-$dutch-white: #D9CAAEff;
-$morning-blue: #809B98ff;
-$camel: #B99861ff;
+
 
 font-family: 'Yellowtail', cursive;
 font-family: 'Open Sans', sans-serif;

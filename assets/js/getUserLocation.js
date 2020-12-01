@@ -4,12 +4,11 @@ let zip = document.getElementById('zip')
 // grab zipcode from form and set url, then callAPI
 formEl.addEventListener('submit', e => {
     e.preventDefault()
-    url = `https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${zip.value}?page=${page}`
-    let userZip = [zip.value, url]
+    usRestaurantMenuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${zip.value}?page=1`
+    let userZip = [zip.value, usRestaurantMenuURL]
 
     localStorage.setItem('zip', JSON.stringify(userZip))
-
-    callAPI()
+    showRestaurants()
 
 })
 
@@ -19,21 +18,20 @@ const useMyLocationBtn = document.getElementById('use-my-loc')
 useMyLocationBtn.addEventListener('click', () => {
 
     if (userLatLonFromLocalStorage.length > 0) {
-        url = JSON.parse(userLatLonFromLocalStorage)[2]
-        callAPI()
+        usRestaurantMenuURL = JSON.parse(userLatLonFromLocalStorage)[2]
+        showRestaurants()
     } else if (userLatLonFromLocalStorage.length === 0) {
         if (navigator.geolocation) {
-            console.log('else if, if')
             navigator.geolocation.getCurrentPosition(position => {
                 const lat = position.coords.latitude
                 const lon = position.coords.longitude
 
-                url = `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?lon=${lon}&lat=${lat}&distance=1&page=${page}`
+                usRestaurantMenuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?lon=${lon}&lat=${lat}&distance=1&page=1`
 
-                let userLocationInfo = [lat, lon, url]
+                let userLocationInfo = [lat, lon, usRestaurantMenuURL]
 
                 localStorage.setItem('latLon', JSON.stringify(userLocationInfo))
-                callAPI()
+                showRestaurants()
             })
         } else {
             var modalDiv = $("<div>").addClass("open-moal show-modal").attr("id", 'modal1').text("Your browser does not support Geolocation data :(");
@@ -43,7 +41,7 @@ useMyLocationBtn.addEventListener('click', () => {
     } else {
         if (userLatLonFromLocalStorage[2]) {
             console.log('test')
-            callAPI()
+            showRestaurants()
         }
     }
 })
