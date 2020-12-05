@@ -16,3 +16,5 @@ let currentRestMenu
 
 const restaurantDiv = document.getElementById('rest-list')
 const menuDiv = document.getElementById('menu-list')
+const dishListDiv = document.getElementById('dish-list')
+const toListBtn = document.getElementById('to-dish-list')

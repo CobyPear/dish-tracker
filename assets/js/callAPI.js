@@ -81,8 +81,7 @@ async function callAPIRestaurants(url) {
             console.log('page not found in storage, adding page')
             restaurantsFromLocalStorage.push(objToStorage)
             localStorage.setItem('restaurants', JSON.stringify(restaurantsFromLocalStorage))
-            let foundMenu = menusFromLocalStorage.find(x => Number(x.restaurant) === Number(currentRestMenu) && Number(menuPage) === Number(x.page))
-            return foundMenu
+            return restaurantsFromLocalStorage[page - 1]
         } else {
             console.log('page not found, return api call')
             return { data, pages, page }
@@ -122,7 +121,8 @@ async function callAPIMenu(url) {
             console.log('page not found in storage, adding page')
             menusFromLocalStorage.push(objToStorage)
             localStorage.setItem('menus', JSON.stringify(menusFromLocalStorage))
-            return menusFromLocalStorage[page - 1]
+            let foundMenu = menusFromLocalStorage.find(x => Number(x.restaurant) === Number(currentRestMenu) && Number(menuPage) === Number(x.page))
+            return foundMenu
         } else {
             console.log('page not found, return api call')
             return { data, pages, page }

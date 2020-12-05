@@ -1,7 +1,7 @@
 async function showRestaurants() {
     try {
         const restaurantList = document.createElement('ul')
-        restaurantList.text = ''
+        restaurantList.innerHTML = ''
         restaurantDiv.innerHTML = ''
 
         let data, pages, page
@@ -24,8 +24,6 @@ async function showRestaurants() {
                 menuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurant/${e.target.id}/menuitems?page=1`
                 menuPage = 1
                 showMenu()
-                // var scrollDiv = document.getElementById("menu-list").offsetTop
-                // window.scrollTo({ top: scrollDiv, behavior: 'smooth' });
                 location.href = '#menu-list'
             })
             restEl.append(restBtn)
@@ -62,22 +60,18 @@ async function showMenu() {
         pages = await response.pages
         page = await response.page
 
-        await data.forEach(menuItem => {
+        await data.forEach((menuItem, i) => {
             const menuEl = document.createElement('li')
             const menuBtn = document.createElement('button')
+            menuBtn.setAttribute('data-toggle', 'modal')
+            menuBtn.setAttribute('data-target', '#modal' + i)
             menuBtn.classList = 'btn btn-success btn-block my-3 py-4'
             menuBtn.id = menuItem.menu_item_name
             menuBtn.dataset.restaurant = menuItem.restaurant_name
+            menuBtn.dataset.description = menuItem.menu_item_description
             menuBtn.innerText = menuItem.menu_item_name
             menuBtn.addEventListener('click', e => {
-                console.log(e.target.id)
-                console.log(e.target.dataset.restaurant)
-                const newDish = {
-                    restaurant: e.target.dataset.restaurant,
-                    dish: e.target.id
-                }
-                dishListFromLocalStorage.push(newDish)
-
+                renderMenuModal(menuItem, i, 'menu')
             })
             menuEl.append(menuBtn)
             menuList.append(menuEl)
