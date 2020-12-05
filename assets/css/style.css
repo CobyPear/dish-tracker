@@ -22,6 +22,7 @@ body {
     text-shadow: #213035ff;
     font-size: 2.7em;
     background: linear-gradient(rgb(196, 129, 85), rgb(74, 202, 91) );
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     padding-right: 5px;
@@ -34,7 +35,7 @@ li {
 ul {
     margin: 0;
     padding: 0;
-    
+
 }
 /*    
 
