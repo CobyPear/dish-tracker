@@ -1,37 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Dish Tracker | Welcome</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dish Tracker | Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Yellowtail&display=swap" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="assets/css/styleindex.css">
-
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
-    <main class="bg">
-        <div>
-            <h1>Dish Tracker</h1>
-        </div>
-        <div class="button">
-            <button type="button" class="btn btn-dark btn-md" id='find-restaurants'>Find Restaurants</button>
-        </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-dark d-flex justify-content-center">
+        <a class="navbar-brand m-0" id="brand" href="homepage.html">Dish Tracker</a>
+    </nav>
+    <main class="d-flex flex-column">
+        <section class='d-flex flex-column'>
+            <button class='btn btn-success py-2 my-3 mx-auto button-colors' id='use-my-loc'><h3>Use My Location</h3></button>
+            <h3 class='text-center'>OR</h3>
+            <form class='d-flex justify-content-center my-3' id='zip-form'>
+                <label for='zipcode' class='my-1'>Zip &ThinSpace;</label>
+                <br>
+                <input type='text' id='zip' name='zip' placeholder='Enter zip'>
+                <input type='submit' value="Let's Go!" class='btn btn-info btn-sm ml-2'>
+            </form>
+            <button class='btn btn-warning py-2 my-3 mx-auto btn-lg' id='to-dish-list'>Take me to my Dish List</button>
+
+        </section>
+
+        <section class="d-flex justify-content-center flex-column">
+            <h2 class='d-flex justify-content-center'>Restaurants</h2>
+            <div class='justify-content-center' id='rest-list'>
+            </div>
+        </section>
+        <section class="d-flex justify-content-center flex-column">
+            <h2 class='d-flex justify-content-center'>Menu</h2>
+            <div class='justify-content-center' id='menu-list'></div>
+        </section>
+        <section class="d-flex justify-content-center flex-column">
+            <h2 class='d-flex justify-content-center'>Dish List</h2>
+            <div class='justify-content-center' id='dish-list'></div>
+        </section>
     </main>
-    <!-- Optional JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script>
-        const enterBtn = document.getElementById('find-restaurants')
-        enterBtn.addEventListener('click', () => {
-            window.location.href = 'homepage.html'
-        })
-    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="./assets/JS/config.js"></script>
+    <script src="./assets//JS/globals.js"></script>
+    <script src="./assets/JS/getUserLocation.js"></script>
+    <script src='./assets/JS/callAPI.js'></script>
+    <script src='./assets/JS/render.js'></script>
+    <script src="./assets/JS/pagination.js"></script>
+    <script src="./assets/JS/eventListeners.js"></script>
+    <script src="./assets/JS/renderModal.js"></script>
+    <script src="./assets/JS/renderDishList.js"></script>
 </body>
+
 </html>
