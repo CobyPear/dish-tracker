@@ -1,3 +1,3 @@
 const config = {
-    KEY: "a8277d1a91msh1d392f5f23bf2a4p184d79jsn13972e7d049f"
+    KEY: "c9f554479ee1d25e12e1015f035b27b5"
 }

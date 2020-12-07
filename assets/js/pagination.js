@@ -13,17 +13,18 @@ function showPageButtons(pages, currentPage, condition) {
             if (condition === 'restaurant') {
                 userPage = e.target.id
                 console.log('userPage: ', userPage)
-                if (userLatLonFromLocalStorage.length > 0) {
-                    const lat = JSON.parse(userLatLonFromLocalStorage)[0]
-                    const lon = JSON.parse(userLatLonFromLocalStorage)[1]
+                if (userFromLocalStorage.lat) {
+                    console.log('userlat')
+                    const lat = userFromLocalStorage.lat
+                    const lon = userFromLocalStorage.lon
 
-                    usRestaurantMenuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?lon=${lon}&lat=${lat}&distance=1&page=${userPage}`
+                    usRestaurantMenuURL = `https://api.documenu.com/v2/restaurants/search/geo?lat=${lat}&lon=${lon}&distance=1&page=${userPage}`
                     console.log(usRestaurantMenuURL)
                     showRestaurants()
-                } else if (userZipFromLocalStorage.length > 0) {
-                    const zip = userZipFromLocalStorage[0]
+                } else if (userFromLocalStorage.zip) {
+                    const zip = userFromLocalStorage.zip
 
-                    usRestaurantMenuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${zip}?page=${userPage}`
+                    usRestaurantMenuURL = `https://api.documenu.com/v2/restaurants/zip_code/${zip}?page=${userPage}`
 
                     showRestaurants()
                 } else {
@@ -34,7 +35,7 @@ function showPageButtons(pages, currentPage, condition) {
                 menuPage = e.target.id
                 console.log('menuPage: ', menuPage)
                 // TODO DO CHECKS HERE LIKE ABOVE
-                menuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurant/${currentRestMenu}/menuitems?page=${menuPage}`
+                menuURL = `https://api.documenu.com/v2/restaurant/${currentRestMenu}/menuitems?page=${menuPage}`
                 showMenu()
             }
         })

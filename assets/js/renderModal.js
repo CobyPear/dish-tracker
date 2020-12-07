@@ -1,5 +1,4 @@
-function renderMenuModal(data, i, type) {
-
+function renderModal(data, i, type) {
     const modal = document.createElement('div')
     modal.classList = 'modal fade'
     modal.id = 'modal' + i
@@ -32,17 +31,37 @@ function renderMenuModal(data, i, type) {
     const modalBody = document.createElement('div')
     modalBody.classList = 'modal-body'
 
-    const modalMenuItemName = document.createElement('h2')
+    let modalMenuItemName = document.createElement('h2')
     modalMenuItemName.innerText = data.menu_item_name
-    if (type === 'menu') modalMenuItemName.innerText = data.menu_item_name
-    if (type === 'dishlist') modalMenuItemName.innerText = data.dish
-    const modalMenuItemDescription = document.createElement('p')
+
+    let modalMenuItemDescription = document.createElement('p')
     modalMenuItemDescription.classList = 'p-1 my-2'
-    if (type === 'menu') modalMenuItemDescription.innerText = data.menu_item_description
-    if (type === 'dishlist') modalMenuItemDescription.innerText = data.description
+
 
     let modalBtn
+
+    if (type === 'rest') {
+        modalTitle.innerText = data.restaurant_name
+        modalMenuItemName = document.createElement('a')
+        modalMenuItemName.href = data.restaurant_website
+        modalMenuItemName.innerText = data.restaurant_website
+        modalMenuItemDescription.innerText = data.price_range ? data.price_range : 'Price information unavailable'
+        let restAddress = document.createElement('h4')
+        restAddress.innerText = `${data.address.street} \n ${data.address.city}, ${data.address.state} \n ${data.address.postal_code} \n ${data.restaurant_phone}`
+        modalBtn = document.createElement('button')
+        modalBtn.classList = 'btn btn-info btn-block py-2 mt-2'
+        modalBtn.textContent = 'Show me the menu!'
+        modalBtn.dataset.dismiss = 'modal'
+        modalBtn.addEventListener('click', e => {
+            showMenu()
+        })
+        modalBody.append(restAddress)
+    }
+
     if (type === 'menu') {
+        modalMenuItemName.innerText = data.menu_item_name
+        modalMenuItemDescription.innerText = data.menu_item_description
+
         modalBtn = document.createElement('button')
         modalBtn.classList = 'btn btn-info btn-block py-2 mt-2'
         modalBtn.textContent = 'Add this to my Dish List!'
@@ -61,8 +80,11 @@ function renderMenuModal(data, i, type) {
             location.href = '#dish-list'
         })
     }
-    
+
     if (type === 'dishlist') {
+        modalMenuItemName.innerText = data.dish
+        modalMenuItemDescription.innerText = data.description
+
         modalBtn = document.createElement('button')
         modalBtn.classList = 'btn btn-warning btn-block py-2 mt-2'
         modalBtn.id = data.dish
@@ -71,7 +93,7 @@ function renderMenuModal(data, i, type) {
         modalBtn.addEventListener('click', e => {
             let foundDish = dishListFromLocalStorage.findIndex(x => x.dish === e.target.id)
             dishListFromLocalStorage.splice(foundDish, 1)
-            
+
             localStorage.setItem('dishlist', JSON.stringify(dishListFromLocalStorage))
             alert(`${data.dish} successfully Removed to your Dish List!`)
             renderDishList()
@@ -79,10 +101,11 @@ function renderMenuModal(data, i, type) {
         })
     }
 
+
     modal.append(modalDialog)
     modalDialog.append(modalContent)
     modalBody.append(modalMenuItemName, modalMenuItemDescription, modalBtn)
     modalHeader.append(modalTitle, modalCloseBtn)
     modalContent.append(modalHeader, modalBody)
-    menuDiv.append(modal)
+    document.body.before(modal)
 }

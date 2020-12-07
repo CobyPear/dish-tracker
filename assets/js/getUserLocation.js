@@ -4,10 +4,14 @@ let zip = document.getElementById('zip')
 // grab zipcode from form and set url, then callAPI
 formEl.addEventListener('submit', e => {
     e.preventDefault()
-    usRestaurantMenuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurants/zip_code/${zip.value}?page=1`
-    let userZip = [zip.value, usRestaurantMenuURL]
+    usRestaurantMenuURL = `https://api.documenu.com/v2/restaurants/zip_code/${zip.value}?page=1`
+    console.log(usRestaurantMenuURL)
+    let userInfo = {
+        zip: zip.value,
+        url: usRestaurantMenuURL
+    }
 
-    localStorage.setItem('zip', JSON.stringify(userZip))
+    localStorage.setItem('user', JSON.stringify(userInfo))
     showRestaurants()
 
 })
@@ -16,30 +20,33 @@ formEl.addEventListener('submit', e => {
 const useMyLocationBtn = document.getElementById('use-my-loc')
 
 useMyLocationBtn.addEventListener('click', () => {
+    console.log(usRestaurantMenuURL)
 
-    if (userLatLonFromLocalStorage.length > 0) {
-        usRestaurantMenuURL = JSON.parse(userLatLonFromLocalStorage)[2]
+    if (userFromLocalStorage.lat) {
+        usRestaurantMenuURL = userFromLocalStorage.url
         showRestaurants()
-    } else if (userLatLonFromLocalStorage.length === 0) {
+    } else if (!userFromLocalStorage.lat) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
                 const lat = position.coords.latitude
                 const lon = position.coords.longitude
 
-                usRestaurantMenuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurants/search/geo?lon=${lon}&lat=${lat}&distance=1&page=1`
+                usRestaurantMenuURL = `https://api.documenu.com/v2/restaurants/search/geo?lat=${lat}&lon=${lon}&distance=1&page=1`
 
-                let userLocationInfo = [lat, lon, usRestaurantMenuURL]
+                let userInfo = {
+                    lat: lat,
+                    lon: lon,
+                    url: usRestaurantMenuURL
+                }
 
-                localStorage.setItem('latLon', JSON.stringify(userLocationInfo))
+                localStorage.setItem('user', JSON.stringify(userInfo))
                 showRestaurants()
             })
         } else {
-            var modalDiv = $("<div>").addClass("open-moal show-modal").attr("id", 'modal1').text("Your browser does not support Geolocation data :(");
-            $('body').append(modalDiv);
-            modalDiv.toggle(".show-modal");
+            alert('Your browser does not support geolocation. Please search by Zip code')
         }
     } else {
-        if (userLatLonFromLocalStorage[2]) {
+        if (dishesFromLocalStorage.url) {
             console.log('test')
             showRestaurants()
         }

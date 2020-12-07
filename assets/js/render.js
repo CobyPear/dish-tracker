@@ -7,24 +7,25 @@ async function showRestaurants() {
         let data, pages, page
 
         const response = await getRestaurants()
-        console.log(response)
         data = await response.data
-        pages = await response.pages
+        pages = await response.total_pages
         page = await response.page
 
+        if (!data) return
 
-        await data.forEach(async restaurant => {
+        await data.forEach(async (restaurant, i) => {
             const restEl = document.createElement('li')
             const restBtn = document.createElement('button')
+            restBtn.setAttribute('data-toggle', 'modal')
+            restBtn.setAttribute('data-target', '#modal' + i)
             restBtn.classList = 'btn btn-primary btn-block my-3 py-4'
             restBtn.innerText = restaurant.restaurant_name
             restBtn.id = restaurant.restaurant_id.toString()
             restBtn.addEventListener('click', e => {
+                renderModal(restaurant, i, 'rest')
                 currentRestMenu = e.target.id
-                menuURL = `https://us-restaurant-menus.p.rapidapi.com/restaurant/${e.target.id}/menuitems?page=1`
+                menuURL = `https://api.documenu.com/v2/restaurant/${e.target.id}/menuitems?page=1`
                 menuPage = 1
-                showMenu()
-                location.href = '#menu-list'
             })
             restEl.append(restBtn)
             restaurantList.append(restEl)
@@ -33,7 +34,8 @@ async function showRestaurants() {
         showPageButtons(pages, page, 'restaurant')
 
         const backToTop = document.createElement('button')
-        backToTop.addEventListener('click', () => {
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault()
             window.scrollTo(0, 0)
         })
         backToTop.classList = 'btn btn-warning py-3'
@@ -48,16 +50,16 @@ async function showRestaurants() {
 
 async function showMenu() {
     try {
+        location.href = '#menu-list'
         const menuList = document.createElement('ul')
-        menuList.text = ''
+        menuList.textContent = ''
         menuDiv.innerHTML = ''
 
         let data, pages, page
 
         const response = await getMenu()
-        console.log(response)
         data = await response.data
-        pages = await response.pages
+        pages = await response.total_pages
         page = await response.page
 
         await data.forEach((menuItem, i) => {
@@ -71,7 +73,7 @@ async function showMenu() {
             menuBtn.dataset.description = menuItem.menu_item_description
             menuBtn.innerText = menuItem.menu_item_name
             menuBtn.addEventListener('click', e => {
-                renderMenuModal(menuItem, i, 'menu')
+                renderModal(menuItem, i, 'menu')
             })
             menuEl.append(menuBtn)
             menuList.append(menuEl)

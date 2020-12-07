@@ -1,6 +1,8 @@
 window.addEventListener('load', (e) => {
     console.log('loaded')
-    showRestaurants(usRestaurantMenuURL)
+    // if (usRestaurantMenuURL !== undefined) {
+    //     showRestaurants(usRestaurantMenuURL)
+    // }
     renderDishList()
 })
 
