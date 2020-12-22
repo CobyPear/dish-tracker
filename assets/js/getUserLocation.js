@@ -15,7 +15,8 @@ useMyLocationBtn.addEventListener('click', () => {
                     lon: lon,
                 }
                 localStorage.setItem('user', JSON.stringify(userLoc))
-
+                userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
+                
                 let data = API.getRestaurantsByGeo(lat, lon, 1)
                 showRestaurants(data)
             })
