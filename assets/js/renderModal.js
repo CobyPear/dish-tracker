@@ -1,7 +1,7 @@
 function renderModal(data, i, type) {
-    const modal = document.createElement('div')
+    let modal = document.createElement('div')
     modal.classList = 'modal fade'
-    modal.id = 'modal' + i
+    modal.id = 'modal' + i + type
     modal.setAttribute('tabindex', -1)
     modal.setAttribute('role', 'dialog')
     modal.setAttribute('aria-labeldby', 'menuModalLabel')
@@ -52,8 +52,13 @@ function renderModal(data, i, type) {
         modalBtn.classList = 'btn btn-info btn-block py-2 mt-2'
         modalBtn.textContent = 'Show me the menu!'
         modalBtn.dataset.dismiss = 'modal'
-        modalBtn.addEventListener('click', e => {
-            showMenu()
+        modalBtn.addEventListener('click', async e => {
+            try {
+                let menuData = await API.getMenu(data.restaurant_id, menuPage)
+                showMenu(menuData)
+            } catch (error) {
+                console.log(error.stack)
+            }
         })
         modalBody.append(restAddress)
     }
