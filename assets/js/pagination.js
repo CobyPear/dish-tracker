@@ -17,13 +17,22 @@ function showPages(page, totalPages, condition) {
                         const lat = userFromLocalStorage.lat
                         const lon = userFromLocalStorage.lon
     
-                        let data = await API.getRestaurantsByGeo(lat, lon, userPage)
-                        showRestaurants(data)
                     } else if (userFromLocalStorage.zip) {
                         const zip = userFromLocalStorage.zip
-    
-                        let data = await API.getRestaurantsByZip(zip, userPage)
-                        showRestaurants(data)
+                        
+                    } else {
+                        const lat = userFromLocalStorage.lat ? userFromLocalStorage.lat : null
+                        const lon = userFromLocalStorage.lon ? userFromLocalStorage.lon : null
+                        const zip = userFromLocalStorage.zip ? userFromLocalStorage.zip : null
+                        if (lat || lon) {
+                            let data = await API.getRestaurantsByGeo(lat, lon, userPage)
+                            showRestaurants(data)
+                        }
+                        if (zip) {
+                            
+                            let data = await API.getRestaurantsByZip(zip, userPage)
+                            showRestaurants(data)
+                        }
                     }
     
                 } else if (condition === 'menu') {
