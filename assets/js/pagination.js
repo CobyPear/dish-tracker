@@ -8,7 +8,7 @@ function showPages(page, totalPages, condition) {
         pageButton.classList = 'btn btn-secondary mx-1'
         pageButton.id = i
         pageButton.innerHTML = i
-        pageButton.addEventListener('click', async (e) => {
+        pageButton.addEventListener('click', async(e) => {
             try {
                 if (condition === 'restaurant') {
                     userPage = e.target.id
@@ -16,10 +16,15 @@ function showPages(page, totalPages, condition) {
                     if (userFromLocalStorage.lat) {
                         const lat = userFromLocalStorage.lat
                         const lon = userFromLocalStorage.lon
-    
+
+                        let data = await API.getRestaurantsByGeo(lat, lon, userPage)
+                        showRestaurants(data)
+
                     } else if (userFromLocalStorage.zip) {
                         const zip = userFromLocalStorage.zip
-                        
+                        let data = await API.getRestaurantsByZip(zip, userPage)
+                        showRestaurants(data)
+
                     } else {
                         const lat = userFromLocalStorage.lat ? userFromLocalStorage.lat : null
                         const lon = userFromLocalStorage.lon ? userFromLocalStorage.lon : null
@@ -29,12 +34,12 @@ function showPages(page, totalPages, condition) {
                             showRestaurants(data)
                         }
                         if (zip) {
-                            
+
                             let data = await API.getRestaurantsByZip(zip, userPage)
                             showRestaurants(data)
                         }
                     }
-    
+
                 } else if (condition === 'menu') {
                     menuPage = e.target.id
                     console.log('menuPage: ', menuPage)
