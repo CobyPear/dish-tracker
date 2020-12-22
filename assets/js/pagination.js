@@ -1,11 +1,11 @@
 function showPages(page, totalPages, condition) {
     if (totalPages === 1) return
     const pageBtnContainer = document.createElement('div')
-    pageBtnContainer.classList = 'container d-flex flex-row justify-content-center'
+    pageBtnContainer.classList = 'container d-flex flex-row flex-wrap justify-content-center'
 
     for (let i = 1; i <= totalPages; i++) {
         const pageButton = document.createElement('button')
-        pageButton.classList = 'btn btn-secondary mx-1'
+        pageButton.classList = 'btn btn-secondary mx-1 p-3 my-2'
         pageButton.id = i
         pageButton.innerHTML = i
         pageButton.addEventListener('click', async(e) => {
