@@ -31,7 +31,7 @@ function renderModal(data, i, type) {
     const modalBody = document.createElement('div')
     modalBody.classList = 'modal-body'
 
-    let modalMenuItemName = document.createElement('h2')
+    let modalMenuItemName = document.createElement('p')
     modalMenuItemName.innerText = data.menu_item_name
 
     let modalMenuItemDescription = document.createElement('p')
@@ -46,7 +46,7 @@ function renderModal(data, i, type) {
         modalMenuItemName.href = data.restaurant_website
         modalMenuItemName.innerText = data.restaurant_website
         modalMenuItemDescription.innerText = data.price_range ? data.price_range : 'Price information unavailable'
-        let restAddress = document.createElement('h4')
+        let restAddress = document.createElement('p')
         restAddress.innerText = `${data.address.street} \n ${data.address.city}, ${data.address.state} \n ${data.address.postal_code} \n ${data.restaurant_phone}`
         modalBtn = document.createElement('button')
         modalBtn.classList = 'btn btn-info btn-block py-2 mt-2'
