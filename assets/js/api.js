@@ -16,7 +16,6 @@ const API = {
 
                 // if the page is found, return it.
                 if (pageInStorage.length) {
-                    console.log('returning page in storage')
                     return pageInStorage[0]
                 }
             }
