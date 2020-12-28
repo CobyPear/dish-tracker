@@ -6,7 +6,7 @@ async function showRestaurants(data) {
         const restaurantsData = await data
         // here we can destructure our object to get the info we need
         let { restaurants, page, totalPages } = await restaurantsData
-        console.log(restaurantsData)
+
         // create a unordered list element
         const restaurantList = document.createElement('ul')
         // clear the list of previous results

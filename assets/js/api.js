@@ -17,7 +17,6 @@ const API = {
                 // if the page is found, return it.
                 if (pageInStorage.length) {
                     console.log('returning page in storage')
-                    console.log(pageInStorage)
                     return pageInStorage[0]
                 }
             }
@@ -36,7 +35,7 @@ const API = {
                 },
             )
             const { restaurants, page, pageId, totalPages } = await response.json()
-            console.log('API HIT')
+
             const objToStorage = {
                 restaurants: restaurants,
                 page: page,
@@ -45,18 +44,15 @@ const API = {
             }
 
             // add data from API call to local storage, then return the data
-            console.log('restaurant not found in storage, adding page')
-
             restaurantsFromLocalStorage.push(objToStorage)
             localStorage.setItem('restaurants', JSON.stringify(restaurantsFromLocalStorage))
 
-            console.log('returning data from API call')
             return { restaurants, page, pageId, totalPages }
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     },
-    getRestaurantsByZip: async(zip, page) => {
+    getRestaurantsByZip: async(zip, userPage) => {
         try {
             // grab id from all restaurants in local storage to check if it's already stored
             const idFromStorage = restaurantsFromLocalStorage.map(x => ({
@@ -64,17 +60,14 @@ const API = {
                 pageNum: x.pageId.split('_')[1],
                 pageId: x.pageId
             }))
-            console.log('id from storage: ', idFromStorage)
 
             // here we'll filter out all the pages that match the search params
             for (let i = 0; i < idFromStorage.length; i++) {
                 // filter through restaurants in storage to find page that matches our request
-                let pageInStorage = restaurantsFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(page) && zip === idFromStorage[i].pageZip)
+                let pageInStorage = restaurantsFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(userPage) && zip === idFromStorage[i].pageZip)
 
                 // if the page is found, return it.
                 if (pageInStorage.length) {
-                    console.log('returning page in storage')
-                    console.log(pageInStorage)
                     return pageInStorage[0]
                 }
             }
@@ -82,7 +75,7 @@ const API = {
             const url = new URL('https://intense-waters-99245.herokuapp.com/api/restaurants/zip')
             const params = {
                 zip: zip,
-                page: page
+                page: userPage
             }
             url.search = new URLSearchParams(params).toString()
 
@@ -92,30 +85,25 @@ const API = {
                 },
             )
 
-            const data = await response.json()
-            console.log('API HIT')
+            const { restaurants, page, pageId, totalPages } = await response.json()
 
             const objToStorage = {
-                restaurants: data.restaurants,
-                page: data.page,
-                pageId: data.pageId,
-                totalPages: data.totalPages
+                restaurants: restaurants,
+                page: page,
+                pageId: pageId,
+                totalPages: totalPages
             }
 
             // add data from API call to local storage, then return the data
-            console.log('restaurant not found in storage, adding page')
-
             restaurantsFromLocalStorage.push(objToStorage)
             localStorage.setItem('restaurants', JSON.stringify(restaurantsFromLocalStorage))
-
-            console.log('returning data from API call')
-            console.log(data)
-            return data[0]
+            // return data from api call
+            return { restaurants, page, pageId, totalPages }
         } catch (error) {
             throw new Error(error)
         }
     },
-    getMenu: async(restId, page) => {
+    getMenu: async(restId, userPage) => {
         try {
             // grab id from all restaurants in local storage to check if it's already stored
             const idFromStorage = menusFromLocalStorage.map(x => ({
@@ -123,25 +111,21 @@ const API = {
                 pageNum: x.pageId.split('_')[1],
                 pageId: x.pageId
             }))
-            console.log('id from storage: ', idFromStorage)
-
             // here we'll filter out all the pages that match the search params
             for (let i = 0; i < idFromStorage.length; i++) {
                 // filter through restaurants in storage to find page that matches our request
-                let pageInStorage = menusFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(page) && restId === idFromStorage[i].restId)
+                let pageInStorage = menusFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(userPage) && restId === idFromStorage[i].restId)
 
                 // if the page is found, return it.
                 if (pageInStorage.length) {
-                    console.log('returning page in storage')
-                    console.log(pageInStorage)
                     return pageInStorage[0]
                 }
             }
-
+            // if we dont find the page in storage, hit the api then add the page
             const url = new URL('https://intense-waters-99245.herokuapp.com/api/menu')
             const params = {
                 restaurant_id: restId,
-                page: page,
+                page: userPage,
             }
             url.search = new URLSearchParams(params).toString()
 
@@ -150,26 +134,22 @@ const API = {
                     method: 'GET',
                 },
             )
-
-            const data = await response.json()
-
+            // await data from api call
+            const { menu, page, pageId, totalPages } = await response.json()
+            // store that data in local storage
             const objToStorage = {
-                menu: data.menu,
-                page: data.page,
-                pageId: data.pageId,
-                totalPages: data.totalPages
+                menu: menu,
+                page: page,
+                pageId: pageId,
+                totalPages: totalPages
             }
-
-            console.log('menu not found in storage, adding page')
 
             menusFromLocalStorage.push(objToStorage)
             localStorage.setItem('menus', JSON.stringify(menusFromLocalStorage))
-
-            console.log('returning data from API call')
-            console.log(data)
-            return data
+            // return data from api call
+            return { menu, page, pageId, totalPages }
         } catch (error) {
-            throw new Error(error.stack)
+            throw new Error(error.message)
         }
     }
 }

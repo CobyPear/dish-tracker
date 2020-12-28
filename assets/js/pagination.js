@@ -12,7 +12,6 @@ function showPages(page, totalPages, condition) {
             try {
                 if (condition === 'restaurant') {
                     userPage = e.target.id
-                    console.log('userPage: ', userPage)
                     if (userFromLocalStorage.lat) {
                         const lat = userFromLocalStorage.lat
                         const lon = userFromLocalStorage.lon
@@ -25,7 +24,6 @@ function showPages(page, totalPages, condition) {
                     }
                 } else if (condition === 'menu') {
                     menuPage = e.target.id
-                    console.log('menuPage: ', menuPage)
                     let data = await API.getMenu(currentRestMenu, menuPage)
                     showMenu(data)
                 }
