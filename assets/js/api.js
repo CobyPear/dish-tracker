@@ -1,26 +1,6 @@
 const API = {
     getRestaurantsByGeo: async(lat, lon, userPage) => {
         try {
-            // grab id from all restaurants in local storage to check if it's already stored
-            const idFromStorage = restaurantsFromLocalStorage.map(x => ({
-                pageLat: x.pageId.split('_')[0],
-                pageLon: x.pageId.split('_')[1],
-                pageNum: x.pageId.split('_')[2],
-                pageId: x.pageId
-            }))
-
-            // here we'll filter out all the pages that match the search params
-            for (let i = 0; i < idFromStorage.length; i++) {
-                // filter through restaurants in storage to find page that matches our request
-                let pageInStorage = restaurantsFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(userPage))
-
-                // if the page is found, return it.
-                if (pageInStorage.length) {
-                    console.log('returning page in storage')
-                    return pageInStorage[0]
-                }
-            }
-
             const url = new URL('https://intense-waters-99245.herokuapp.com/api/restaurants/geo')
             const params = {
                 lat: lat,
@@ -36,17 +16,7 @@ const API = {
             )
             const { restaurants, page, pageId, totalPages } = await response.json()
 
-            const objToStorage = {
-                restaurants: restaurants,
-                page: page,
-                pageId: pageId,
-                totalPages: totalPages
-            }
-
-            // add data from API call to local storage, then return the data
-            restaurantsFromLocalStorage.push(objToStorage)
-            localStorage.setItem('restaurants', JSON.stringify(restaurantsFromLocalStorage))
-
+    
             return { restaurants, page, pageId, totalPages }
         } catch (error) {
             throw new Error(error.message)
@@ -54,24 +24,6 @@ const API = {
     },
     getRestaurantsByZip: async(zip, userPage) => {
         try {
-            // grab id from all restaurants in local storage to check if it's already stored
-            const idFromStorage = restaurantsFromLocalStorage.map(x => ({
-                pageZip: x.pageId.split('_')[0],
-                pageNum: x.pageId.split('_')[1],
-                pageId: x.pageId
-            }))
-
-            // here we'll filter out all the pages that match the search params
-            for (let i = 0; i < idFromStorage.length; i++) {
-                // filter through restaurants in storage to find page that matches our request
-                let pageInStorage = restaurantsFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(userPage) && zip === idFromStorage[i].pageZip)
-
-                // if the page is found, return it.
-                if (pageInStorage.length) {
-                    return pageInStorage[0]
-                }
-            }
-
             const url = new URL('https://intense-waters-99245.herokuapp.com/api/restaurants/zip')
             const params = {
                 zip: zip,
@@ -87,17 +39,6 @@ const API = {
 
             const { restaurants, page, pageId, totalPages } = await response.json()
 
-            const objToStorage = {
-                restaurants: restaurants,
-                page: page,
-                pageId: pageId,
-                totalPages: totalPages
-            }
-
-            // add data from API call to local storage, then return the data
-            restaurantsFromLocalStorage.push(objToStorage)
-            localStorage.setItem('restaurants', JSON.stringify(restaurantsFromLocalStorage))
-            // return data from api call
             return { restaurants, page, pageId, totalPages }
         } catch (error) {
             throw new Error(error)
@@ -105,23 +46,8 @@ const API = {
     },
     getMenu: async(restId, userPage) => {
         try {
-            // grab id from all restaurants in local storage to check if it's already stored
-            const idFromStorage = menusFromLocalStorage.map(x => ({
-                restId: x.pageId.split('_')[0],
-                pageNum: x.pageId.split('_')[1],
-                pageId: x.pageId
-            }))
-            // here we'll filter out all the pages that match the search params
-            for (let i = 0; i < idFromStorage.length; i++) {
-                // filter through restaurants in storage to find page that matches our request
-                let pageInStorage = menusFromLocalStorage.filter(x => x.pageId === idFromStorage[i].pageId && Number(x.page) === Number(userPage) && restId === idFromStorage[i].restId)
-
-                // if the page is found, return it.
-                if (pageInStorage.length) {
-                    return pageInStorage[0]
-                }
-            }
-            // if we dont find the page in storage, hit the api then add the page
+            
+            // hit the api then add the page
             const url = new URL('https://intense-waters-99245.herokuapp.com/api/menu')
             const params = {
                 restaurant_id: restId,
@@ -135,19 +61,23 @@ const API = {
                 },
             )
             // await data from api call
-            const { menu, page, pageId, totalPages } = await response.json()
-            // store that data in local storage
-            const objToStorage = {
-                menu: menu,
-                page: page,
-                pageId: pageId,
-                totalPages: totalPages
-            }
-
-            menusFromLocalStorage.push(objToStorage)
-            localStorage.setItem('menus', JSON.stringify(menusFromLocalStorage))
+            let { menu, page, pageId, totalPages } = await response.json()
+            console.log('api hit menu',menu)
+           
             // return data from api call
-            return { menu, page, pageId, totalPages }
+            if (menu.length > 0) {
+                return { menu, page, pageId, totalPages }
+            } else {
+                menu = [{
+                     menu_item_name: 'Sorry, no menu available at the moment. Try again later',
+                     menu_item_price: '',
+                     menu_item_description: '',
+                     price_range: '',
+                     restaurant_name: 'Error'
+            }]
+                console.log(menu, page, pageId, totalPages)
+                return { menu, page, pageId, totalPages}
+            }
         } catch (error) {
             throw new Error(error.message)
         }

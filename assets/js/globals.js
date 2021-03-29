@@ -2,8 +2,6 @@
 let storedDishes = JSON.parse(localStorage.getItem("Dish")) || []
 let dishesFromLocalStorage = JSON.parse(localStorage.getItem('restaurantDishes')) || []
 let userFromLocalStorage = JSON.parse(localStorage.getItem('user')) || []
-let restaurantsFromLocalStorage = JSON.parse(localStorage.getItem('restaurants')) || []
-let menusFromLocalStorage = JSON.parse(localStorage.getItem('menus')) || []
 let dishListFromLocalStorage = JSON.parse(localStorage.getItem('dishlist')) || []
 
 // HTML elements

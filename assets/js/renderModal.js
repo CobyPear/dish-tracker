@@ -84,6 +84,9 @@ function renderModal(data, i, type) {
             renderDishList()
             location.href = '#dish-list'
         })
+        if (data.restaurant_name === 'Error') {
+            modalBtn.disabled = true
+        }
     }
 
     if (type === 'dishlist') {
