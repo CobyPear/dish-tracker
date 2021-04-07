@@ -3,7 +3,7 @@ const formEl = document.getElementById('zip-form')
 let zip = document.getElementById('zip')
 
 // When user clicks 'Use My Location', the API is called with the user's location data.
-useMyLocationBtn.addEventListener('click', () => {
+useMyLocationBtn.addEventListener('click',() => {
     if (navigator.geolocation) {
         if (!userFromLocalStorage.lat) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -16,6 +16,7 @@ useMyLocationBtn.addEventListener('click', () => {
                 }
                 localStorage.setItem('user', JSON.stringify(userLoc))
                 userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
+
                 
                 let data = API.getRestaurantsByGeo(lat, lon, 1)
                 showRestaurants(data)
